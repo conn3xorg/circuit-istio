@@ -8,7 +8,7 @@ Two things tend to catch people on k3s, and this circuit handles both. Istio sup
 
 ```hcl
 module "k3s" {
-  source = "github.com/conn3xorg/circuit-k3s?ref=v0.1.3"
+  source = "github.com/conn3xorg/circuit-k3s?ref=v0.1.4"
 
   servers              = { cp1 = "203.0.113.10" }
   token                = var.k3s_token
@@ -16,7 +16,7 @@ module "k3s" {
 }
 
 module "istio" {
-  source     = "github.com/conn3xorg/circuit-istio?ref=v0.1.0"
+  source     = "github.com/conn3xorg/circuit-istio?ref=v0.1.1"
   depends_on = [module.k3s]
 
   server               = "203.0.113.10"
@@ -73,7 +73,7 @@ It reaches state, so nothing secret goes there. Only the default settings have b
 On the server you name, in order:
 
 1. Checks that the k3s installed there is on `k3s_minors`, and stops with a message if it isn't. The check runs on every plan, so a later k3s upgrade past Istio's range shows up too.
-2. Waits for k3s to settle. k3s can exit just after creating its Helm CRDs, which leaves them never established, and then it exits a minute into every start after that, taking the API away in the middle of an install. If that has happened, this deletes the two CRDs and k3s creates them again. Nothing can be stored in them until they're established, so nothing is lost.
+2. Waits for every CRD to be established. If one stays stuck, the apply fails and points to [Troubleshooting](https://github.com/conn3xorg/circuit-k3s#troubleshooting) in circuit-k3s. It never deletes a CRD.
 3. Stops if `ingress_gateway` is on and Traefik is enabled.
 4. Downloads `istioctl`, checks its SHA-256, unpacks it under `/opt/istio/VERSION` and links `/usr/local/bin/istioctl` to it.
 5. Writes `/var/lib/conn3x-istio/operator.yaml` and runs `istioctl install` with it, which waits for Istio to be ready.
@@ -117,7 +117,7 @@ Set `istio_version`, `checksums` and `k3s_minors` together, with the versions fr
 
 ## Requirements
 
-Requires Conn3x v0.6.10 or later, a k3s server on a Kubernetes version Istio supports, and outbound HTTPS to GitHub and to the registry Istio's images come from. `istiod` asks the scheduler for 500m of CPU and 2 GiB of memory by default, and each sidecar for 100m and 128 MiB.
+Requires Conn3x v0.6.10 or later, circuit-k3s v0.1.4 or later if that's what built your cluster, a k3s server on a Kubernetes version Istio supports, and outbound HTTPS to GitHub and to the registry Istio's images come from. `istiod` asks the scheduler for 500m of CPU and 2 GiB of memory by default, and each sidecar for 100m and 128 MiB.
 
 ## Tested on
 
@@ -125,7 +125,7 @@ Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. CI applies [examples/loca
 
 The rest was run by hand on 2 vCPU, 4 GB droplets with one node each. On Rocky Linux 10 with SELinux enforcing: the same checks, an upgrade from 1.31.2 to 1.31.3 with the pods restarted afterwards, then a reboot with no changes in the plan and the checks passing again. On Ubuntu 24.04: the same checks and a reboot, with Traefik off and `ingress_gateway = true`, and on a second droplet a `Gateway` and `VirtualService` answering 200 from outside on port 80 through the gateway.
 
-Before this circuit waited for k3s to settle, an apply failed on Ubuntu 24.04 when k3s lost the API partway through. On a droplet, deleting the stuck CRDs by hand cleared it, and that's what the settle step does. The step's own recovery path hasn't been seen firing in a run.
+v0.1.0 deleted k3s's Helm CRDs when they weren't established after about three minutes. On a cluster that was only slow, that would have deleted every HelmChart in it, so upgrade from v0.1.0. v0.1.1 only waits. CI runs it with circuit-k3s v0.1.4; the droplet runs above were on v0.1.0.
 
 Not run: more than one node, arm64 on a real host, ambient mode, an upgrade between minor versions, k3s versions other than v1.37.1 (the circuit-k3s default).
 
