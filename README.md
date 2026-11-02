@@ -1,5 +1,7 @@
 # circuit-istio
 
+[![Conn3x grade](https://conn3x.org/circuits/istio/grade.svg)](https://conn3x.org/circuits/istio/grade)
+
 A Conn3x circuit that installs [Istio](https://istio.io) on a k3s cluster with `istioctl`, at a version you pin, with the tarball's SHA-256 checked. Istio recommends `istioctl` for most installs, because it validates the configuration and checks the result. It's for the cluster you've built with [circuit-k3s](https://github.com/conn3xorg/circuit-k3s), and it takes you to sidecars on the namespaces you name.
 
 Two things tend to catch people on k3s, and this circuit handles both. Istio supports a set range of Kubernetes versions, so it checks yours before touching anything. And k3s's Traefik already holds ports 80 and 443, which is where Istio's ingress gateway wants to be.
