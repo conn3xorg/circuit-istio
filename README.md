@@ -10,7 +10,7 @@ Two things tend to catch people on k3s, and this circuit handles both. Istio sup
 
 ```hcl
 module "k3s" {
-  source = "github.com/conn3xorg/circuit-k3s?ref=v0.1.4"
+  source = "github.com/conn3xorg/circuit-k3s?ref=v0.1.5"
 
   servers              = { cp1 = "203.0.113.10" }
   token                = var.k3s_token
