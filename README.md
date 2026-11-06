@@ -119,7 +119,7 @@ Set `istio_version`, `checksums` and `k3s_minors` together, with the versions fr
 
 ## Requirements
 
-Requires Conn3x v0.6.10 or later, circuit-k3s v0.1.4 or later if that's what built your cluster, a k3s server on a Kubernetes version Istio supports, and outbound HTTPS to GitHub and to the registry Istio's images come from. `istiod` asks the scheduler for 500m of CPU and 2 GiB of memory by default, and each sidecar for 100m and 128 MiB.
+Requires Conn3x v0.7.1 or later, circuit-k3s v0.1.4 or later if that's what built your cluster, a k3s server on a Kubernetes version Istio supports, and outbound HTTPS to GitHub and to the registry Istio's images come from. `istiod` asks the scheduler for 500m of CPU and 2 GiB of memory by default, and each sidecar for 100m and 128 MiB.
 
 ## Tested on
 
