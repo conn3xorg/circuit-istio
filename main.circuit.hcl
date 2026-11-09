@@ -62,6 +62,7 @@ circuit "istio" {
   # Never delete them here: on a cluster that's only slow, that would lose every
   # HelmChart.
   step "k3s_settled" {
+    # conn3x-lint:ignore C3X101 a gate before Istio installs anything, not state to keep; the install steps are checked on every plan
     command {
       command = "${local.wait_api}; ( ${local.crds_up} ) || { echo 'k3s CRDs did not become Established. See Troubleshooting in the circuit-k3s README: https://github.com/conn3xorg/circuit-k3s#troubleshooting' >&2; exit 1; }"
     }
