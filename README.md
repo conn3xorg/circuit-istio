@@ -18,7 +18,7 @@ module "k3s" {
 }
 
 module "istio" {
-  source     = "github.com/conn3xorg/circuit-istio?ref=v0.1.2"
+  source     = "github.com/conn3xorg/circuit-istio?ref=v0.1.3"
   depends_on = [module.k3s]
 
   server               = "203.0.113.10"
