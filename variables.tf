@@ -5,12 +5,12 @@ variable "server" {
 
 variable "istio_version" {
   type        = string
-  default     = "1.31.3"
+  default     = "1.31.4"
   description = "Istio release, without a v. Change it with checksums and k3s_minors."
 
   validation {
     condition     = can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+$", var.istio_version))
-    error_message = "istio_version is a release number such as \"1.31.3\"."
+    error_message = "istio_version is a release number such as \"1.31.4\"."
   }
 }
 
@@ -18,8 +18,8 @@ variable "checksums" {
   type        = map(string)
   description = "SHA-256 of the istioctl tarball for each architecture, from the .sha256 file beside it on the Istio release."
   default = {
-    amd64 = "382c3004ce2e9c5ed3064b092ae0da7f6bbe30c766a1be282f45725add004860"
-    arm64 = "7476801623dbb900073cb1dba6a23b6a15c564b7e92b208aed36829315fefff1"
+    amd64 = "7c00227d87f280c2450483e3518e3a73af62c057363b779ea80931c409e8852e"
+    arm64 = "3a1a82af8788059192d411e92d952c32d31a69bc20a039b3915f536d395e0c24"
   }
 }
 
