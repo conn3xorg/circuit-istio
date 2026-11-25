@@ -99,8 +99,8 @@ Set `istio_version`, `checksums` and `k3s_minors` together, with the versions fr
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
 | `server` | any | Required | One k3s server to run `istioctl` on: an address, or a host object with an `address` and optional `host_key`, `user`, `port`, `private_key_file` and `jump_hosts`. |
-| `istio_version` | string | `"1.31.3"` | Istio release, without a `v`. |
-| `checksums` | map(string) | The 1.31.3 checksums | SHA-256 of the `istioctl` tarball, for `amd64` and `arm64`. |
+| `istio_version` | string | `"1.31.4"` | Istio release, without a `v`. |
+| `checksums` | map(string) | The 1.31.4 checksums | SHA-256 of the `istioctl` tarball, for `amd64` and `arm64`. |
 | `k3s_minors` | list(string) | `["1.32", "1.33", "1.34", "1.35", "1.36", "1.37"]` | Kubernetes minor versions the server's k3s may run. |
 | `ingress_gateway` | bool | `false` | Install Istio's ingress gateway, using its `default` profile rather than `minimal`. Needs Traefik disabled. |
 | `inject_namespaces` | list(string) | `[]` | Namespaces to create if missing and label for sidecar injection. |
